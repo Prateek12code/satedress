@@ -2,24 +2,100 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Virtual Try-On (Canvas2D Fallback)</title>
+    <title>Virtual Try-On Booth</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <div class="stage">
-      <video id="video" autoplay playsinline></video>
-      <canvas id="overlay"></canvas>
+    <!-- START -->
+    <section id="start" class="scene start">
+      <div class="center">
+        <h1>Virtual Try-On Booth</h1>
+        <p>Tap to start camera and take your photo</p>
+        <button id="btnStart" class="btn duobtn xl primary">
+          📷 Tap to Start Camera
+        </button>
+      </div>
+    </section>
+
+    <!-- CAMERA / PHOTO / RESULT -->
+    <section id="main" class="scene hidden">
+      <div class="stage">
+        <video id="cam" autoplay playsinline></video>
+        <canvas id="photo" class="hidden"></canvas>
+        <img id="resultImg" class="hidden" alt="Result" />
+        <div id="frameGuide" class="frame-guide"></div>
+      </div>
+
+      <div id="badge" class="badge hidden">
+        <img id="badgeImg" src="" alt="Selected dress" />
+        <span id="badgeLabel"></span>
+      </div>
+
+      <div class="hud bottom">
+        <button id="btnRetake" class="btn duobtn ghost" hidden>↺ Retake</button>
+        <button id="btnWardrobe" class="btn duobtn ghost" hidden>
+          🧥 Wardrobe
+        </button>
+        <div class="spacer"></div>
+        <button id="btnSnap" class="btn duobtn xl primary">
+          📸 Snap Photo
+        </button>
+        <button id="btnGenerate" class="btn duobtn xl primary" hidden>
+          ✨ Generate
+        </button>
+      </div>
+    </section>
+
+    <!-- WARDROBE -->
+    <aside id="sidebar" class="sidebar hidden" aria-label="Wardrobe">
+      <div class="head">
+        <h3>Wardrobe</h3>
+        <button id="btnCloseSidebar" class="icon" aria-label="Close">✕</button>
+      </div>
+
+      <!-- Upload your own dress -->
+      <div class="uploader-wrap">
+        <label class="uploader">
+          <input id="dressFile" type="file" accept="image/*" />
+          <span>+ Upload Your Own Dress</span>
+        </label>
+      </div>
+
+      <!-- State groups -->
+      <div id="gallery" class="gallery"></div>
+
+      <!-- Choose -->
+      <div class="choose-footer">
+        <div id="chooseHint" class="hint">
+          Tap a dress card, then press “Choose Dress”.
+        </div>
+        <button id="btnChooseDress" class="btn duobtn primary" disabled>
+          Choose Dress
+        </button>
+      </div>
+    </aside>
+
+    <!-- GENERATING OVERLAY -->
+    <div
+      id="generating"
+      class="overlay hidden"
+      role="status"
+      aria-live="polite"
+    >
+      <div class="card">
+        <div class="spinner"></div>
+        <h2>Generating outfit…</h2>
+        <p id="progressMsg" class="muted">Analyzing pose</p>
+      </div>
     </div>
 
-    <div class="hud">
-      <label class="btn">
-        Upload Dress PNG
-        <input type="file" id="dressInput" accept="image/png" hidden />
-      </label>
-      <button id="snapshotBtn" class="btn">Snapshot</button>
+    <!-- POST-ACTIONS -->
+    <div id="postActions" class="post-actions" hidden>
+      <button id="btnTryAgain" class="btn duobtn primary">Change Dress</button>
+      <button id="btnRestart" class="btn duobtn ghost">Back to Start</button>
     </div>
 
-    <script type="module" src="js/app.js"></script>
+    <script src="./app.js"></script>
   </body>
 </html>
